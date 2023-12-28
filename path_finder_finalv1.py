@@ -9,8 +9,6 @@ from PIL import Image
 # Constants
 WIDTH, HEIGHT = 750, 750
 ROWS, COLS = 250,250
-#it will creae full screen if WIDTH // COLS &&  HEIGHT // ROWS = int
-
 CELL_WIDTH = WIDTH // COLS
 CELL_HEIGHT = HEIGHT // ROWS
  
@@ -138,7 +136,7 @@ def convert_img(image_path = "United3.png"):
 #img part start
 #image_path = "Untitled5.png"
 initial_img = "United3.png"
-initial_img = "United6.png"
+initial_img = "United7.png"
 image_path = convert_img(initial_img)   
 
 image = pygame.image.load(image_path)
@@ -205,7 +203,7 @@ def update_neghibour_distance(x,y,index_distance):
             grid[x][y + 1]['previous'] = (x,y)
 
 # Your existing code...
-def backline(last):
+def backline(last,color=(0, 255, 0)):
     if grid[last[0]][last[1]]['is_visited']:
         path = []
         current = last
@@ -215,13 +213,14 @@ def backline(last):
 
         # Drawing the shortest path
         for node in path:
-            draw_cell(node[0], node[1], color=(0, 255, 0))  # Green color for the shortest path
+            draw_cell(node[0], node[1], color)  # Green color for the shortest path
         pygame.display.update()
 
 def distance(a, b):
     return sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
 
 skip = False 
+reached = False
 initial_selcted = False
 end_selected = False
 img_active= 1 #1 or 2 or 3
@@ -274,7 +273,7 @@ while running:
     ATTRACTION_FACTOR = 1.4
     ATTRACTION_FACTOR =5
 
-    ATTRACTION_FACTOR = 100
+    ATTRACTION_FACTOR = 1
     if not skip and initial_selcted==True and end_selected ==True:
         
         for row in range(ROWS):
@@ -284,8 +283,10 @@ while running:
                     min_node = (row, col)
                    
                     if row == end[0] and col == end[1]:
-                        skip = True
+                        skip = True # if skip == true , when it reach the destination it will stop
+                        #skip = false ; i want more try3
                         print("Reached")
+                        reached= True
                     
                     
                     
@@ -296,7 +297,8 @@ while running:
             backline(min_node)
             
     else:
-        backline(end)
+        t=1
+        #backline(end)
              
 
 
