@@ -7,11 +7,13 @@ import numpy as np
 from PIL import Image
 
 # Constants
-WIDTH, HEIGHT = 700, 700
+WIDTH, HEIGHT = 750, 750
 ROWS, COLS = 250,250
+#it will creae full screen if WIDTH // COLS &&  HEIGHT // ROWS = int
+
 CELL_WIDTH = WIDTH // COLS
 CELL_HEIGHT = HEIGHT // ROWS
-
+ 
 # Define colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -242,6 +244,8 @@ while running:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             row = mouse_y // CELL_HEIGHT
             col = mouse_x // CELL_WIDTH
+            #print (pygame.mouse.get_pos())
+            print((row,col))
         
 
             if  not  initial_selcted :
