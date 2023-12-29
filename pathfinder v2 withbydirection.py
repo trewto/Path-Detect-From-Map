@@ -7,8 +7,8 @@ import numpy as np
 from PIL import Image
 import copy
 # Constants
-WIDTH, HEIGHT = 630, 630
-ROWS, COLS = 210,210
+WIDTH, HEIGHT = 800, 800
+ROWS, COLS = 200,200
 CELL_WIDTH = WIDTH // COLS
 CELL_HEIGHT = HEIGHT // ROWS
  
@@ -63,7 +63,7 @@ def draw_grid():
             if grid[row][col]['is_visited']:
                 pygame.draw.rect(window, YELLOW, (col * CELL_WIDTH, row * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT), 1)
             if grid2[row][col]['is_visited']:
-                pygame.draw.rect(window, YELLOW, (col * CELL_WIDTH, row * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT), 1)
+                pygame.draw.rect(window, (135, 206, 235), (col * CELL_WIDTH, row * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT), 1)
 
             cell_info = f'({grid[row][col]["x"]}, {grid[row][col]["y"]}) | V: {grid[row][col]["is_visited"]} | D: {grid[row][col]["distance"]}'
             #display_multiline_text(window, cell_info, (col * CELL_WIDTH + 5, row * CELL_HEIGHT + 5))  # Adjust position for better alignment
@@ -138,7 +138,7 @@ def convert_img(image_path = "United3.png"):
 #img part start
 #image_path = "Untitled5.png"
 initial_img = "United3.png"
-initial_img = "United3.png"
+initial_img = "United6.png"
 image_path = convert_img(initial_img)   
 
 image = pygame.image.load(image_path)
@@ -247,6 +247,8 @@ def backline2(last,color=(0, 255, 0)):
 def distance(a, b):
     return sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
 
+
+
 skip = False 
 reached = False
 initial_selcted = False
@@ -275,7 +277,7 @@ while running:
             row = mouse_y // CELL_HEIGHT
             col = mouse_x // CELL_WIDTH
             #print (pygame.mouse.get_pos())
-            print((row,col))
+            #print((row,col))
         
 
             if  not  initial_selcted :
@@ -285,15 +287,17 @@ while running:
                 grid[start[0]][start[1]]['distance']=0
                 initial_selcted = True
                 index = start
-                print (initial_selcted)
+                #print (initial_selcted)
             elif not end_selected:
                 end[0] = row
                 end[1] = col
                 end_selected = True
-                print (end_selected)
+                #print (end_selected)
                 index2= end
                 grid2[end[0]][end[1]]['distance']=0
-                print (grid2)
+                #print (grid2)
+                #img_active = 1
+                window.blit(resized_image1, (0, 0))
 
 
             #if not (row == start[0] and col == start[1]) and not (row == end[0] and col == end[1]):
@@ -311,7 +315,7 @@ while running:
     ATTRACTION_FACTOR = 1.4
     ATTRACTION_FACTOR =5
 
-    ATTRACTION_FACTOR = 4
+    ATTRACTION_FACTOR = 10
     if not skip and initial_selcted==True and end_selected ==True:
         
         for row in range(ROWS):
@@ -329,12 +333,12 @@ while running:
                 if not grid2[row][col]['is_visited'] and (grid2[row][col]['distance'] + ATTRACTION_FACTOR* distance( (row, col) , (start[0],start[1]))) < min_distance2:
                     min_distance2 = grid2[row][col]['distance'] + ATTRACTION_FACTOR*  distance( (row, col) , (start[0],start[1]))
                     min_node2 = (row, col)
-                    print(5)
+                    #print(5)
 
                 if grid[row][col]['is_visited'] and  grid2[row][col]['is_visited']:
                     skip = True
                     mid = (row,col)
-                    print(99)
+                    #print(99)
                     
                     
                     
@@ -343,6 +347,7 @@ while running:
             index = min_node
             update_neghibour_distance(index[0],index[1],grid[index[0]][index[1]]['distance'])
             backline(min_node)
+            #print(2)
         if min_node2:
             index2 = min_node2
             update_neghibour_distance2(index2[0],index2[1],grid2[index2[0]][index2[1]]['distance'])
@@ -355,18 +360,36 @@ while running:
         backline2(start)
              
 
+    if not skip and initial_selcted==True and end_selected ==True:
 
-    draw_grid()
-    if img_active==2:
-        window.blit(resized_image2, (0, 0))
-    elif img_active==1:
-        window.blit(resized_image1, (0, 0))
-    draw_cell(start[0], start[1])
-    draw_cell(end[0], end[1])
-    backline((end[0],end[1]))
-    backline2((start[0],start[1]))
+        t = 2
+ 
+
+    else:
+        draw_grid()
+        if img_active==2:
+            window.blit(resized_image2, (0, 0))
+        elif img_active==1:
+            window.blit(resized_image1, (0, 0))
+        draw_cell(start[0], start[1])
+        draw_cell(end[0], end[1])
+        backline((end[0],end[1]))
+        backline2((start[0],start[1]))
+
+
+
     if mid is not None:
-         backline((mid[0],mid[1]))
-         backline2((mid[0],mid[1]))
+        backline((mid[0],mid[1]))
+        backline2((mid[0],mid[1]))
+
+        draw_grid()
+        if img_active==2:
+            window.blit(resized_image2, (0, 0))
+        elif img_active==1:
+            window.blit(resized_image1, (0, 0))
+        draw_cell(start[0], start[1])
+        draw_cell(end[0], end[1])
+        backline((end[0],end[1]))
+        backline2((start[0],start[1]))
     pygame.display.update()
     
