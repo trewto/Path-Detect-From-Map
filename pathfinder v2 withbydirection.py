@@ -315,7 +315,7 @@ while running:
     ATTRACTION_FACTOR = 1.4
     ATTRACTION_FACTOR =5
 
-    ATTRACTION_FACTOR = 10
+    ATTRACTION_FACTOR = 10# Attractoin = 0 to for dijsuka algorithm
     if not skip and initial_selcted==True and end_selected ==True:
         
         for row in range(ROWS):
